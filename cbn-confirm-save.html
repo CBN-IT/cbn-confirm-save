@@ -1,0 +1,156 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../paper-styles/color.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+
+<!--
+`cbn-confirm-save` 
+
+    <cbn-confirm-save
+		id="confirmSave"
+		on-cbn-confirm-save-discard="discardChanges"
+		on-cbn-confirm-save-cancel="cancelChanges"
+		on-cbn-confirm-save-save="saveChanges">
+	</cbn-confirm-save>
+
+### Validation
+
+### Styling
+
+@demo demo/index.html
+@class cbn-confirm-save
+-->
+
+<dom-module id="cbn-confirm-save">
+	<template>
+		<style>
+			#dialog {
+				border-radius: 10px;
+				overflow: hidden;
+			}
+			#dialog .header{
+				margin-top: 0;
+				background-color: #f7f7f7;
+				border-bottom: 1px solid #ebebeb;
+				font-size: 16px;
+				font-weight: bold;
+				padding: 10px 24px 10px 20px;
+			}
+			#dialog .header iron-icon{
+				color: var(--paper-red-400);
+				margin-right: 7px;
+			}
+			#dialog paper-button {
+				padding: 0.3em 0.57em;
+			}
+
+			#dialog .content {
+				font-size: 17px;
+				font-weight:bold;
+			}
+
+			#dialog .modal-buttons{
+				display: flex;
+				justify-content: space-around;
+				font-weight: bold;
+			}
+
+			#dialog paper-button.red:hover {
+				background-color: var(--paper-red-100);
+			}
+
+			#dialog paper-button.green:hover {
+				background-color: var(--paper-green-100);
+			}
+
+			#dialog paper-button.grey:hover {
+				background-color: var(--paper-grey-100);
+			}
+
+			#dialog paper-button.red {
+				background-color: white;
+				color: var(--google-red-500);
+			}
+
+			#dialog paper-button.green {
+				background-color: white;
+				color: var(--google-green-500);
+			}
+
+			#dialog paper-button.grey {
+				color: initial;
+			}
+			paper-button[hidden]{
+				display: none !important;
+			}
+		</style>
+		<paper-dialog modal="true" id="dialog">
+			<div class="header"><iron-icon icon="icons:warning"></iron-icon>You didn't save your changes.</div>
+			<div class="content">
+				Do you wish to save your changes?
+			</div>
+			<div class="modal-buttons">
+				<paper-button class="red" hidden$="[[!hasDiscard]]" on-tap="_discardChanges">Discard changes</paper-button>
+				<paper-button class="grey" hidden$="[[!hasCancel]]" on-tap="_cancelChanges">Cancel</paper-button>
+				<paper-button class="green" hidden$="[[!hasSave]]" on-tap="_saveChanges">Save</paper-button>
+			</div>
+		</paper-dialog>
+	</template>
+</dom-module>
+
+<script>
+	(function () {
+		Polymer({
+
+			is: 'cbn-confirm-save',
+			behaviors: [],
+			properties: {
+				hasSave: {
+					type: Boolean,
+					value: true,
+					notify: false,
+					readOnly: false,
+					reflectToAttribute: false
+				},
+				hasCancel: {
+					type: Boolean,
+					value: true,
+					notify: false,
+					readOnly: false,
+					reflectToAttribute: false
+				},
+				hasDiscard: {
+					type: Boolean,
+					value: true,
+					notify: false,
+					readOnly: false,
+					reflectToAttribute: false
+				}
+
+
+			},
+			listeners: {},
+			ready: function () {
+			},
+			_discardChanges: function(){
+				this.fire("cbn-confirm-save-discard")
+			},
+			_cancelChanges:function(){
+				this.fire("cbn-confirm-save-cancel")
+			},
+			_saveChanges:function(){
+				this.fire("cbn-confirm-save-save")
+			},
+			close:function(){
+				this.$.dialog.close();
+			},
+			open:function(){
+				this.$.dialog.open();
+			},
+			toggle:function(){
+				this.$.dialog.toggle();
+			}
+		})
+	})();
+</script>
