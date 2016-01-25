@@ -134,12 +134,14 @@
 			ready: function () {
 			},
 			_discardChanges: function(){
+				this._reject();
 				this.fire("cbn-confirm-save-discard")
 			},
 			_cancelChanges:function(){
 				this.fire("cbn-confirm-save-cancel")
 			},
 			_saveChanges:function(){
+				this._resolve();
 				this.fire("cbn-confirm-save-save")
 			},
 			close:function(){
@@ -147,6 +149,10 @@
 			},
 			open:function(){
 				this.$.dialog.open();
+				return new Promise(function(resolve, reject){
+					this._resolve = resolve;
+					this._reject = reject;
+				}.bind(this));
 			},
 			toggle:function(){
 				this.$.dialog.toggle();
