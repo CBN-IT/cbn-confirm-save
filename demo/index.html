@@ -13,9 +13,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	<title>cbn-help</title>
 
 	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-	<link rel="import" href="../cbn-help.html">
+	<link rel="import" href="../../cbn-help/cbn-help.html">
 	<link rel="import" href="../../paper-spinner/paper-spinner.html">
+	<link rel="import" href="../cbn-confirm-save.html">
 
+	<link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+	<link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+	
 	<style>
 		html,body{
 			margin:0;
@@ -30,10 +34,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		}
 	</style>
 </head>
-<body>
-	<template id="first" is="dom-bind">
-		<cbn-help loading="{{loading}}"></cbn-help>
-		<paper-spinner active="{{loading}}"></paper-spinner>
-	</template>
-	</body>
+<div style="margin: 20px auto; width: 500px;">
+	<h1>Cbn-Confirm-Save Demo</h1>
+<form is="cbn-form" id="demoForm" model style="width: 100%;">
+	<demo-snippet class="centered-demo" style="position:relative">
+		<template is="dom-bind">
+			<paper-button on-tap="openDialog">SMTH</paper-button>
+			<cbn-confirm-save id="confirm"
+							  on-cbn-confirm-save-discard="discardChanges"
+							  on-cbn-confirm-save-cancel="cancelChanges"
+							  on-cbn-confirm-save-save="saveChanges">
+				<div class="header">
+					This is a header
+				</div>
+				<div class="content">
+					This is the content
+				</div>
+			</cbn-confirm-save>
+		</template>
+	</demo-snippet>
+</form>
+</div>
+<script>
+	var tpl = document.querySelector('template[is=dom-bind]');
+	tpl.openDialog = function(){
+		this.$.confirm.open();
+	}
+	tpl.discardChanges = function() {
+		this.$.confirm._discardChanges();
+	}
+	tpl.cancelChanges = function() {
+		this.$.confirm._cancelChanges();
+	}
+	tpl.saveChanges = function() {
+		this.$.confirm._saveChanges();
+		this.$.confirm.close();
+	}
+</script>
 </html>
